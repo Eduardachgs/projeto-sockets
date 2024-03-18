@@ -9,13 +9,6 @@ symKeys = {}
 def register(pc):
     pass
 
-# assimetric keys
-# def new_keys(pc):
-#     # Gera as chaves pública e privada
-#     pubKey, privKey = rsa.newkeys(512)
-#     pubKeys[pc] = pubKey
-#     return privKey
-    
 # Função para processar cada requisição dos clientes
 def process_request(server_socket):
     while True:
@@ -26,7 +19,8 @@ def process_request(server_socket):
         if clientAddress[1] not in pubKeys.keys():
             print(f'cliente {clientAddress} tentando se registrar...')
             print(f'Cliente {clientAddress} registrado com sucesso!')
-            
+            pubKeys[clientAddress[1]] = clientAddress
+
             ans = f"Bem vindo, {clientAddress}!"
             server_socket.sendto(ans.encode(), clientAddress)
 
