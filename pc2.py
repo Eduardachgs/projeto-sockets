@@ -1,7 +1,7 @@
 from pc import Pc
 from threading import Thread
 
-pc2 = Pc(2222)
+pc2 = Pc(2, 2222)
 
 pc2.register()
 

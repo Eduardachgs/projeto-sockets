@@ -1,6 +1,7 @@
 import rsa 
 from socket import socket, AF_INET, SOCK_DGRAM
 from threading import Thread
+import pickle
 
 # dicionário para armazenar as chaves públicas
 pubKeys = {}
@@ -18,12 +19,13 @@ def process_request(server_socket):
         # Verifica se o nó já está registrado
         if clientAddress[1] not in pubKeys.keys():
             print(f'cliente {clientAddress} tentando se registrar...')
-            print(f'Cliente {clientAddress} registrado com sucesso!')
+
+            #ciphertext = rsa.encrypt(privkey, client_pubkey) # usa chave pública do criente para criptografar a chave privada
+            ciphertext = 'oi'.encode()
+            server_socket.sendto(ciphertext, clientAddress)
             pubKeys[clientAddress[1]] = clientAddress
 
-            ans = f"Bem vindo, {clientAddress}!"
-            server_socket.sendto(ans.encode(), clientAddress)
-
+            print(f'Cliente {clientAddress} registrado com sucesso!')
         else:    
             print(f'A mensagem recebida de {clientAddress} foi {request}')
 
