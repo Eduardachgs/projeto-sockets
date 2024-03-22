@@ -1,36 +1,34 @@
 import rsa 
 from socket import socket, AF_INET, SOCK_DGRAM
 from threading import Thread
-import pickle
 
 # dicionário para armazenar as chaves públicas
 pubKeys = {}
 symKeys = {}
-
-def register(pc):
-    pass
 
 # Função para processar cada requisição dos clientes
 def process_request(server_socket):
     while True:
         message, clientAddress = server_socket.recvfrom(2048)
         request = message.decode()
+        request = request.split(':')
 
         # Verifica se o nó já está registrado
-        if clientAddress[1] not in pubKeys.keys():
-            print(f'cliente {clientAddress} tentando se registrar...')
+        if request[1] == 'register':
+            print(f'PC {request[0]} tentando se registrar...')
+            pubkey, privkey = rsa.newkeys(512) # gera chaves pública e privada
+            privkey = privkey.save_pkcs1()
+            server_socket.sendto(privkey, clientAddress)
 
-            #ciphertext = rsa.encrypt(privkey, client_pubkey) # usa chave pública do criente para criptografar a chave privada
-            ciphertext = 'oi'.encode()
-            server_socket.sendto(ciphertext, clientAddress)
-            pubKeys[clientAddress[1]] = clientAddress
+            pubKeys[request[0]] = pubkey
 
-            print(f'Cliente {clientAddress} registrado com sucesso!')
-        else:    
-            print(f'A mensagem recebida de {clientAddress} foi {request}')
-
-            ans = f'Olá, cliente {clientAddress}'
-            server_socket.sendto(ans.encode(), clientAddress)
+            print(f'PC {request[0]} registrado com sucesso!')
+        else:
+            print(f'Pc {request[0]} solicitando chave pública de PC{request[2]}')    
+            pubkey = pubKeys[request[2][0]]
+            pubkey = pubkey.save_pkcs1()
+            server_socket.sendto(pubkey, clientAddress)
+            print('Chave enviada com sucesso!')
 
 server_socket = socket(AF_INET, SOCK_DGRAM)
 server_socket.bind(("localhost", 7777))
