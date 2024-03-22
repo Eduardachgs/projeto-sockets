@@ -24,7 +24,7 @@ def process_request(server_socket):
 
             print(f'PC {request[0]} registrado com sucesso!')
         else:
-            print(f'Pc {request[0]} solicitando chave pública de PC{request[2]}')    
+            print(f'Pc {request[0]} solicitando chave pública de PC{request[2][0]}')    
             pubkey = pubKeys[request[2][0]]
             pubkey = pubkey.save_pkcs1()
             server_socket.sendto(pubkey, clientAddress)
