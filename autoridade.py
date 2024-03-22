@@ -4,7 +4,6 @@ from threading import Thread
 
 # dicionário para armazenar as chaves públicas
 pubKeys = {}
-symKeys = {}
 
 # Função para processar cada requisição dos clientes
 def process_request(server_socket):
@@ -13,7 +12,7 @@ def process_request(server_socket):
         request = message.decode()
         request = request.split(':')
 
-        # Verifica se o nó já está registrado
+        # Verifica o tipo de requisiçao
         if request[1] == 'register':
             print(f'PC {request[0]} tentando se registrar...')
             pubkey, privkey = rsa.newkeys(512) # gera chaves pública e privada
