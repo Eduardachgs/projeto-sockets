@@ -6,8 +6,6 @@ class Pc:
     def __init__(self, pc, porta):
         self.pc = pc
         self.porta = porta
-        self.simetric_keys = {} 
-        self.privKey = None
         self.client_socket = socket(AF_INET, SOCK_DGRAM)
         self.server_socket = socket(AF_INET, SOCK_DGRAM)
 
@@ -18,7 +16,7 @@ class Pc:
         self.client_socket.sendto(request.encode(), server_address)
         
         print('Registrando o nó na autoridade...')
-        print(f'Nó registrado com sucesso!')
+        print('Nó registrado com sucesso!')
 
     # Função para receber mensagens de outros PCs
     def server_function(self, porta):
