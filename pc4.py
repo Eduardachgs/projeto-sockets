@@ -5,7 +5,6 @@ pc1 = Pc(4, 4444)
 
 pc1.register()
 
-# implementação de threads para que PC possa se comportar como cliente e servidor
 server_thread = Thread(target=pc1.server_function, args=(4444,))
 client_thread = Thread(target=pc1.client_function, args=())
 

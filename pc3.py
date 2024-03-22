@@ -5,7 +5,6 @@ pc3 = Pc(3, 3333)
 
 pc3.register()
 
-# implementação de threads para que PC possa se comportar como cliente e servidor
 server_thread = Thread(target=pc3.server_function, args=(3333,))
 client_thread = Thread(target=pc3.client_function, args=())
 
