@@ -28,7 +28,7 @@ class Pc:
             message, clientAddress = self.server_socket.recvfrom(2048)
             request = message.decode()
 
-            # Se a mensagem iniciar com a tag RRRR ela foi roteada
+            # Se a mensagem iniciar com a tag RRRR ela foi roteada, se iniciar com BBBB é broadcast
             if request[0:4] == 'RRRR' or request[0:4] == 'BBBB':
                 _, pc_origem, pc_destino, msg = request.split(':')
 
@@ -36,7 +36,6 @@ class Pc:
                 if self.pc == int(pc_destino):
                     if request[0:4] == 'BBBB':
                         ans = f'{self.pc} recebeu a mensagem roteada'
-                        _, pc_origem, pc_destino, msg = request.split(':')
                         print(f"A mensagem recebida foi: {msg}")
                         ans = f'RRRR:{self.pc}:{int(msg[2])}:PC{self.pc} recebeu a mensagem broadcast'
                         destino = roteamento.enviar_mensagens(self.pc, int(msg[2]))
